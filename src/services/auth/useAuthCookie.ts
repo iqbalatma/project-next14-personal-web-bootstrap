@@ -83,7 +83,8 @@ const useAuthCookie = () => {
         cookie,
         setLoginCookie,
         check,
-        logout
+        logout,
+        getToken
     }
 }
 

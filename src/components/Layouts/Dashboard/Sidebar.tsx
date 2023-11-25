@@ -80,6 +80,15 @@ const Sidebar = () => {
                                 </li>
                             </ul>
                         </li>
+
+                        <li className="sidebar-title">Admin</li>
+                        <li
+                            className="sidebar-item  ">
+                            <Link href={"/management/permissions"} className='sidebar-link'>
+                                <i className="bi bi-grid-fill"></i>
+                                <span>Permissions</span>
+                            </Link>
+                        </li>
                     </ul>
                 </div>
             </div>

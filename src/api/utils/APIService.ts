@@ -1,4 +1,4 @@
-import axiosInstance from "@/api/utils/axiosInstance";
+import axiosInstance, {APIOption} from "@/api/utils/AxiosInstance";
 import {ResponseBody} from "@/api/utils/type";
 
 class APIService {
@@ -16,6 +16,17 @@ class APIService {
      */
     public static async post<PayloadType>(endpoint: string, body: object): Promise<ResponseBody<PayloadType>> {
         const response = await axiosInstance(true).post(this.getBaseUrl() + endpoint, body);
+
+        return response.data;
+    }
+
+    /**
+     *
+     * @param endpoint
+     * @param options
+     */
+    public static async get<PayloadType>(endpoint: string, options: APIOption = {}): Promise<ResponseBody<PayloadType>> {
+        const response = await axiosInstance(false, options).get(this.getBaseUrl() + endpoint);
 
         return response.data;
     }
