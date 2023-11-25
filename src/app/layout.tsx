@@ -5,7 +5,7 @@ import "../../public/assets/compiled/css/app.css"
 import "../../public/assets/compiled/css/app-dark.css"
 import "../../public/assets/compiled/css/iconly.css"
 import React from "react";
-// import AuthProvider from "@/providers/AuthProvider";
+import AuthProvider from "@/providers/AuthProvider";
 
 const inter = Inter({subsets: ['latin']})
 
@@ -22,9 +22,9 @@ export default function RootLayout({
   return (
       <html lang="en">
       <body className={inter.className}>
-      {/*<AuthProvider>*/}
+      <AuthProvider>
         {children}
-      {/*</AuthProvider>*/}
+      </AuthProvider>
 
       </body>
       </html>
