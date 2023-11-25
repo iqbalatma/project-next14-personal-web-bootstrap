@@ -4,7 +4,7 @@ import {useRouter} from "next/navigation";
 import {useCookies} from "react-cookie";
 import useAuth from "@/services/auth/useAuth";
 import JWTService from "@/services/JWTService";
-import {PayloadLogin} from "@/api/auth/AuthenticateService";
+import {PayloadLogin} from "@/api/client-side/auth/AuthenticateService";
 
 const useAuthCookie = () => {
     const [cookie, setCookie, removeCookie] = useCookies(["access_token", "refresh_token"])

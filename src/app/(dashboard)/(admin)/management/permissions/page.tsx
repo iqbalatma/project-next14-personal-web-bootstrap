@@ -1,9 +1,22 @@
-import React from 'react';
-import PermissionService, {PayloadGetAll} from "@/api/admin/management/PermissionService";
+"use client"
+import {useEffect, useState} from "react";
+import PermissionService from "@/api/client-side/admin/management/PermissionService";
+import {Permission} from "@/types/models/Permission";
 
-const Page = async () => {
-    const permissions: PayloadGetAll = await PermissionService.getAll()
-    console.log(permissions)
+const Page = () => {
+    const [permissions, setPermissions] = useState<any>([])
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    useEffect(() => {
+        setIsLoading(true)
+        const fetchData = async () => {
+            return await PermissionService.getAll();
+        }
+
+        fetchData().then((response) => {
+            setPermissions(response.data)
+            setIsLoading(false)
+        })
+    }, [])
     return (
         <section className="section">
             <div className="row" id="basic-table">
@@ -15,44 +28,26 @@ const Page = async () => {
                         <div className="card-content">
                             <div className="card-body">
                                 <div className="table-responsive">
+
+                                    {isLoading && <h1>Loading . . . </h1>}
+
                                     <table className="table table-lg">
                                         <thead>
                                         <tr>
-                                            <th>NAME</th>
-                                            <th>RATE</th>
-                                            <th>SKILL</th>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Guard Name</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td className="text-bold-500">Michael Right</td>
-                                            <td>$15/hr</td>
-                                            <td className="text-bold-500">UI/UX</td>
 
-                                        </tr>
-                                        <tr>
-                                            <td className="text-bold-500">Morgan Vanblum</td>
-                                            <td>$13/hr</td>
-                                            <td className="text-bold-500">Graphic concepts</td>
-
-                                        </tr>
-                                        <tr>
-                                            <td className="text-bold-500">Tiffani Blogz</td>
-                                            <td>$15/hr</td>
-                                            <td className="text-bold-500">Animation</td>
-
-                                        </tr>
-                                        <tr>
-                                            <td className="text-bold-500">Ashley Boul</td>
-                                            <td>$15/hr</td>
-                                            <td className="text-bold-500">Animation</td>
-
-                                        </tr>
-                                        <tr>
-                                            <td className="text-bold-500">Mikkey Mice</td>
-                                            <td>$15/hr</td>
-                                            <td className="text-bold-500">Animation</td>
-                                        </tr>
+                                        {!isLoading && permissions.map((item: Permission, index: number) => (
+                                            <tr key={index}>
+                                                <td>{item.id}</td>
+                                                <td>{item.name}</td>
+                                                <td>{item.guard_name}</td>
+                                            </tr>
+                                        ))}
                                         </tbody>
                                     </table>
                                 </div>
@@ -64,5 +59,6 @@ const Page = async () => {
         </section>
     );
 };
+
 
 export default Page;

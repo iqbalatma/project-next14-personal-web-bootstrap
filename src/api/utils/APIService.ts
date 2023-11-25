@@ -1,5 +1,8 @@
 import axiosInstance, {APIOption} from "@/api/utils/AxiosInstance";
 import {ResponseBody} from "@/api/utils/type";
+import axios from "axios";
+import {RESPONSE_CODE} from "@/enums/RESPONSE_CODE";
+import cookie from "@/libraries/cookie";
 
 class APIService {
     /**
@@ -26,9 +29,22 @@ class APIService {
      * @param options
      */
     public static async get<PayloadType>(endpoint: string, options: APIOption = {}): Promise<ResponseBody<PayloadType>> {
-        const response = await axiosInstance(false, options).get(this.getBaseUrl() + endpoint);
+        try {
+            const response = await axiosInstance(false, options).get(this.getBaseUrl() + endpoint);
+            return response.data;
+        } catch (error: any) {
+            this.fetchingErrorHandler(error)
+            throw error;
+        }
+    }
 
-        return response.data;
+    private static fetchingErrorHandler(error: any) {
+        if (axios.isAxiosError(error)) {
+            if (error.response?.data.rc === RESPONSE_CODE.ERR_UNKNOWN) {
+                console.log(cookie.get("access_token"));
+                console.log("HARUSNYA LOGOUT")
+            }
+        }
     }
 }
 

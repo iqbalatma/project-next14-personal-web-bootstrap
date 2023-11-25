@@ -11,6 +11,7 @@ const axiosInstance = (isFormData: boolean = false, options?: APIOption) => {
     return axios.create({
         headers: {
             "Content-Type": isFormData ? "multipart/form-data" : "application/json",
+            "Accept" : "application/json",
             ...options?.headers
         }
     })

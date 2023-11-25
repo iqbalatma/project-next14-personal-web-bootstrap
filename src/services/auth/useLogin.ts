@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
 import HTTP_RESPONSE_TYPE from "@/enums/HTTP_RESPONSE_TYPE";
-import ERROR_CODE from "@/enums/ERROR_CODE";
 import {useRouter} from "next/navigation";
 import helper from "@/services/helper";
-import AuthenticateService from "@/api/auth/AuthenticateService";
+import AuthenticateService from "@/api/client-side/auth/AuthenticateService";
 import useAuthCookie from "@/services/auth/useAuthCookie";
+import {RESPONSE_CODE} from "@/enums/RESPONSE_CODE";
 
 type LoginInputErrors = {
     email?: string | null,
@@ -57,12 +57,14 @@ const useLogin = () => {
             }
 
             const response = await AuthenticateService.login(email, password)
+            console.log(response)
+
             setLoginCookie(response)
             router.push("/dashboard")
         } catch (exceptionError: any) {
             const {errorCode, errorType} = helper.parseFetchException(exceptionError);
             if (errorType === HTTP_RESPONSE_TYPE.CLIENT_ERROR) {
-                if (errorCode === ERROR_CODE.ERR_UNAUTHENTICATED) {
+                if (errorCode === RESPONSE_CODE.ERR_UNAUTHENTICATED) {
                     setAlertError("Invalid user credentials")
                     setInputErrors({
                         password: "Password is invalid",
