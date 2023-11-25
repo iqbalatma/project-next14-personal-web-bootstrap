@@ -3,7 +3,6 @@ import cookie from "@/libraries/cookie";
 import {ResponseBody} from "@/api/utils/type";
 import {Permission} from "@/types/models/Permission";
 import {PaginationType} from "@/types/Pagination";
-import axios from "axios";
 import {FetchingError} from "@/types/FetchingError";
 
 export type PayloadGetAll = {
@@ -22,8 +21,9 @@ class PermissionService {
 
             return response.payload
         } catch (error: any) {
+            console.log(error)
             return {
-                "data": [],
+                "data": null,
                 "error": 'Something went wrong'
             }
         }

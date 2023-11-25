@@ -20,9 +20,8 @@ const Layout = ({
                             <div className="page-title">
                                 <div className="row">
                                     <div className="col-12 col-md-6 order-md-1 order-last">
-                                        <h3>Vertical Layout with Navbar</h3>
-                                        <p className="text-subtitle text-muted">Navbar will appear on the top of the
-                                            page.</p>
+                                        <h3>HAHAH</h3>
+                                        <p className="text-subtitle text-muted">Data Diatas</p>
                                     </div>
 
                                     <div className="col-12 col-md-6 order-md-2 order-first">
@@ -35,7 +34,6 @@ const Layout = ({
                                 {children}
                             </section>
                         </div>
-
                     </div>
                     <Footer></Footer>
                 </div>

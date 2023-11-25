@@ -1,4 +1,4 @@
 export type FetchingError = {
-    data : []|object|null,
+    data : null,
     error: string
 }

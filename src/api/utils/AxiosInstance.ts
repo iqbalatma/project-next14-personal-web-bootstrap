@@ -8,6 +8,7 @@ export type APIOption = {
     headers?: Header,
 }
 const axiosInstance = (isFormData: boolean = false, options?: APIOption) => {
+    console.log(options)
     return axios.create({
         headers: {
             "Content-Type": isFormData ? "multipart/form-data" : "application/json",

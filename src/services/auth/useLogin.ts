@@ -56,11 +56,18 @@ const useLogin = () => {
                 return;
             }
 
-            const response = await AuthenticateService.login(email, password)
-            console.log(response)
+            // const response = await AuthenticateService.login(email, password)
 
-            setLoginCookie(response)
-            router.push("/dashboard")
+            const response = await fetch("/api/admin/management/permissions", {
+                method: "POST",
+                headers:{
+
+                }
+            })
+            console.log(await response.json())
+
+            // setLoginCookie(response)
+            // router.push("/dashboard")
         } catch (exceptionError: any) {
             const {errorCode, errorType} = helper.parseFetchException(exceptionError);
             if (errorType === HTTP_RESPONSE_TYPE.CLIENT_ERROR) {

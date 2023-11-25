@@ -9,16 +9,17 @@ class APIService {
      * @return string
      */
     public static getBaseUrl(): string {
-        return process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8080/api/v1/auth";
+        return process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8080/api/v1";
     }
 
     /**
      *
      * @param endpoint
      * @param body
+     * @param option
      */
-    public static async post<PayloadType>(endpoint: string, body: object): Promise<ResponseBody<PayloadType>> {
-        const response = await axiosInstance(true).post(this.getBaseUrl() + endpoint, body);
+    public static async post<PayloadType>(endpoint: string, body: object, option:object): Promise<ResponseBody<PayloadType>> {
+        const response = await axiosInstance(true, option).post(this.getBaseUrl() + endpoint, body);
 
         return response.data;
     }
@@ -40,7 +41,7 @@ class APIService {
 
     private static fetchingErrorHandler(error: any) {
         if (axios.isAxiosError(error)) {
-            if (error.response?.data.rc === RESPONSE_CODE.ERR_UNKNOWN) {
+            if (error.response?.data.rc === RESPONSE_CODE.ERR_UNAUTHENTICATED) {
                 console.log(cookie.get("access_token"));
                 console.log("HARUSNYA LOGOUT")
             }

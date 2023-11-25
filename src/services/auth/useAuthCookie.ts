@@ -19,12 +19,12 @@ const useAuthCookie = () => {
             const accessToken = getToken("access_token");
             if (accessToken && accessToken !== "") {
                 const user = JWTService.getUser(accessToken);
-
+                console.log(user)
                 const {setLogin} = useAuth.getState()
                 setLogin(user)
                 return true;
             } else {
-                // logout()
+                logout()
                 return false;
             }
         }
