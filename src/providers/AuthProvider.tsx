@@ -4,9 +4,9 @@ import useAuthCookie from "@/services/auth/useAuthCookie";
 
 const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const {check} = useAuthCookie()
-    useEffect(() => {
-        check()
-    }, []);
+    // useEffect(() => {
+    //     check()
+    // }, []);
     return (
         <>
             {children}

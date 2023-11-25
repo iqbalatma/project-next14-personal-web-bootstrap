@@ -24,7 +24,7 @@ const useAuthCookie = () => {
                 setLogin(user)
                 return true;
             } else {
-                logout()
+                // logout()
                 return false;
             }
         }
