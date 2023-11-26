@@ -2,7 +2,7 @@ import {TokenType} from "@/types/TokenType";
 
 import {useRouter} from "next/navigation";
 import {useCookies} from "react-cookie";
-import useAuth from "@/services/auth/useAuth";
+import useAuth from "@/services/global-state/useAuth";
 import JWTService from "@/services/JWTService";
 import {PayloadLogin} from "@/api/client-side/auth/AuthenticateService";
 
@@ -14,13 +14,11 @@ const useAuthCookie = () => {
      * use to check is user login or not
      */
     const check = (): boolean => {
-        const {isLogin} = useAuth.getState()
+        const {isLogin, setLogin} = useAuth.getState()
         if (!isLogin) {
             const accessToken = getToken("access_token");
             if (accessToken && accessToken !== "") {
                 const user = JWTService.getUser(accessToken);
-                console.log(user)
-                const {setLogin} = useAuth.getState()
                 setLogin(user)
                 return true;
             } else {

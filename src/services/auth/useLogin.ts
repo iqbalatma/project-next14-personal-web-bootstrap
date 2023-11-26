@@ -5,6 +5,7 @@ import helper from "@/services/helper";
 import AuthenticateService from "@/api/client-side/auth/AuthenticateService";
 import useAuthCookie from "@/services/auth/useAuthCookie";
 import {RESPONSE_CODE} from "@/enums/RESPONSE_CODE";
+import useAlert from "@/services/global-state/useAlert";
 
 type LoginInputErrors = {
     email?: string | null,
@@ -13,25 +14,21 @@ type LoginInputErrors = {
 const useLogin = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [alertError, setAlertError] = useState<string | null>(null)
     const [inputErrors, setInputErrors] = useState<LoginInputErrors>({
         email: null,
         password: null
     })
     const {setLoginCookie} = useAuthCookie()
+    const {setAlert} = useAlert.getState()
     let isErrors: boolean = false;
     const router = useRouter()
 
-    const handleCloseAlert = (): void => {
-        setAlertError(null)
-    }
 
     const initialState = () => {
         setInputErrors({
             email: null,
             password: null
         })
-        setAlertError(null)
     }
 
     const handleSubmit = async (): Promise<void> => {
@@ -56,23 +53,14 @@ const useLogin = () => {
                 return;
             }
 
-            // const response = await AuthenticateService.login(email, password)
-
-            const response = await fetch("/api/admin/management/permissions", {
-                method: "POST",
-                headers:{
-
-                }
-            })
-            console.log(await response.json())
-
-            // setLoginCookie(response)
-            // router.push("/dashboard")
+            const response = await AuthenticateService.login(email, password)
+            setLoginCookie(response)
+            router.push("/dashboard")
         } catch (exceptionError: any) {
             const {errorCode, errorType} = helper.parseFetchException(exceptionError);
             if (errorType === HTTP_RESPONSE_TYPE.CLIENT_ERROR) {
                 if (errorCode === RESPONSE_CODE.ERR_UNAUTHENTICATED) {
-                    setAlertError("Invalid user credentials")
+                    setAlert("Invalid user credentials")
                     setInputErrors({
                         password: "Password is invalid",
                         email: "Email is invalid",
@@ -81,17 +69,15 @@ const useLogin = () => {
             }
 
             if (errorType === HTTP_RESPONSE_TYPE.SERVER_ERROR) {
-                setAlertError("Something went wrong")
+                setAlert("Something went wrong")
             }
         }
     }
 
     return {
         handleSubmit,
-        handleCloseAlert,
         setEmail,
         setPassword,
-        alertError,
         inputErrors
     }
 }

@@ -1,7 +1,7 @@
 import {create} from "zustand";
 import {User} from "@/types/models/User";
 
-type userStore = {
+type UserStore = {
     user: User | null,
     isLogin: boolean,
     token: {
@@ -12,7 +12,7 @@ type userStore = {
     setLoginStatus: (isLogin: boolean) => void,
 }
 
-const useAuth = create<userStore>((set) => ({
+const useAuth = create<UserStore>((set) => ({
     user: null,
     token: {
         access_token: null,

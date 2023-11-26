@@ -3,25 +3,23 @@ import cookie from "@/libraries/cookie";
 import {ResponseBody} from "@/api/utils/type";
 import {Permission} from "@/types/models/Permission";
 import {PaginationType} from "@/types/Pagination";
-import {FetchingError} from "@/types/FetchingError";
 
 export type PayloadGetAll = {
-    data: Permission[],
-    pagination: PaginationType
+    data: Permission[]|null,
+    pagination?: PaginationType,
+    error?: null|string
 }
 
 class PermissionService {
-    public static async getAll(): Promise<PayloadGetAll | FetchingError> {
+    public static async getAll(): Promise<PayloadGetAll> {
         try {
             const response: ResponseBody<PayloadGetAll> = await APIService.get("/admin/management/permissions", {
                 headers: {
                     Authorization: `Bearer ${cookie.get("access_token")}`
                 }
             });
-
             return response.payload
         } catch (error: any) {
-            console.log(error)
             return {
                 "data": null,
                 "error": 'Something went wrong'

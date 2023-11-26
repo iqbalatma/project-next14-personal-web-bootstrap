@@ -1,18 +1,18 @@
 import axios from "axios";
-import {cookies} from "next/headers";
+
 export type Header = {
-    Authorization : string|null
+    Authorization: string | null
 }
 
 export type APIOption = {
     headers?: Header,
+    "User-Agent"?: string | null
 }
 const axiosInstance = (isFormData: boolean = false, options?: APIOption) => {
-    console.log(options)
     return axios.create({
         headers: {
             "Content-Type": isFormData ? "multipart/form-data" : "application/json",
-            "Accept" : "application/json",
+            "Accept": "application/json",
             ...options?.headers
         }
     })

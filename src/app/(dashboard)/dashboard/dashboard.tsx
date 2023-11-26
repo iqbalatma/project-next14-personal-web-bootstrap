@@ -1,6 +1,6 @@
 "use client"
 import React, {useEffect} from 'react';
-import useAuth from "@/services/auth/useAuth";
+import useAuth from "@/services/global-state/useAuth";
 
 const Dashboard = () => {
     const user = useAuth(state => state.user);

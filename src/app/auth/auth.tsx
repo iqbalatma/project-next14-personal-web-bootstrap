@@ -6,7 +6,7 @@ import Link from "next/link";
 import useLogin from "@/services/auth/useLogin";
 
 const Auth = () => {
-    const {handleSubmit, setEmail, setPassword, inputErrors, alertError, handleCloseAlert} = useLogin()
+    const {handleSubmit, setEmail, setPassword, inputErrors} = useLogin()
     return (
         <>
             <div id="auth-left">
@@ -16,7 +16,7 @@ const Auth = () => {
                 <h1 className="auth-title">Log in.</h1>
                 <p className="auth-subtitle mb-5">Log in with your data that you entered during
                     registration.</p>
-                {alertError && <Alert alertText={alertError} onClose={handleCloseAlert}></Alert>}
+                <Alert></Alert>
 
                 <form onSubmit={(e) => e.preventDefault()}>
                     <div className="form-group position-relative has-icon-left mb-4">

@@ -3,6 +3,7 @@ import {ResponseBody} from "@/api/utils/type";
 import axios from "axios";
 import {RESPONSE_CODE} from "@/enums/RESPONSE_CODE";
 import cookie from "@/libraries/cookie";
+import {cookies} from "next/headers";
 
 class APIService {
     /**
@@ -18,9 +19,8 @@ class APIService {
      * @param body
      * @param option
      */
-    public static async post<PayloadType>(endpoint: string, body: object, option:object): Promise<ResponseBody<PayloadType>> {
+    public static async post<PayloadType>(endpoint: string, body: object, option?: APIOption): Promise<ResponseBody<PayloadType>> {
         const response = await axiosInstance(true, option).post(this.getBaseUrl() + endpoint, body);
-
         return response.data;
     }
 
@@ -34,6 +34,7 @@ class APIService {
             const response = await axiosInstance(false, options).get(this.getBaseUrl() + endpoint);
             return response.data;
         } catch (error: any) {
+            console.log("DI API SERVICE")
             this.fetchingErrorHandler(error)
             throw error;
         }

@@ -1,7 +1,7 @@
 "use client"
 import React from 'react';
 import {User} from "@/types/models/User";
-import useAuth from "@/services/auth/useAuth";
+import useAuth from "@/services/global-state/useAuth";
 
 const Navbar = () => {
     const user: User | null = useAuth(state => state.user)
