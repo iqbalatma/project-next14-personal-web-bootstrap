@@ -10,14 +10,13 @@ import useAlert from "@/services/global-state/useAlert";
 const Page = () => {
     const [permissions, setPermissions] = useState<Permission[] | null>(null)
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [error, setError] = useState<string | null>(null)
-    const {setAlert} = useAlert()
+    const {setAlert, isShowAlert} = useAlert();
     const fetchData = async () => {
         setIsLoading(true)
         const response = await PermissionService.getAll();
         setPermissions(response.data);
         if (response?.error) {
-            setError(response?.error)
+            setAlert(response?.error)
         }
         setIsLoading(false)
     }
@@ -25,7 +24,6 @@ const Page = () => {
     useEffect(() => {
         fetchData()
     }, [])
-
 
     return (
         <div className="page-heading">
@@ -42,8 +40,6 @@ const Page = () => {
                     </div>
                 </div>
             </div>
-
-
             <section className="section">
                 <section className="section">
                     <div className="row" id="basic-table">
@@ -58,7 +54,6 @@ const Page = () => {
 
                                             {isLoading && <h1>Loading . . . </h1>}
 
-                                            {error && <h1>INI ERROR</h1>}
                                             <table className="table table-lg">
                                                 <thead>
                                                 <tr>

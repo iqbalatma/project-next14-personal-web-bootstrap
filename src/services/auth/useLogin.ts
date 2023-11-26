@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import HTTP_RESPONSE_TYPE from "@/enums/HTTP_RESPONSE_TYPE";
 import {useRouter} from "next/navigation";
 import helper from "@/services/helper";
@@ -52,6 +52,7 @@ const useLogin = () => {
             if (isErrors) {
                 return;
             }
+
 
             const response = await AuthenticateService.login(email, password)
             setLoginCookie(response)

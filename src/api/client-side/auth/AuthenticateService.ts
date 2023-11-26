@@ -23,7 +23,7 @@ class AuthenticateService {
      * @param password
      */
     public static async login(email: string, password: string): Promise<PayloadLogin> {
-        const response: ResponseBody<PayloadLogin> = await APIService.post<PayloadLogin>("/auth", {
+        const response = await APIService.post<PayloadLogin>("/auth", {
             email,
             password
         });

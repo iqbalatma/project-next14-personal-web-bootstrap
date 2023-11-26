@@ -1,12 +1,14 @@
 import axios from "axios";
 
 export type Header = {
-    Authorization: string | null
+    Authorization?: string | null,
+    "User-Agent"?: string | null
 }
 
 export type APIOption = {
     headers?: Header,
-    "User-Agent"?: string | null
+    "User-Agent"?: string | null,
+    "cache-control"?: string | null
 }
 const axiosInstance = (isFormData: boolean = false, options?: APIOption) => {
     return axios.create({

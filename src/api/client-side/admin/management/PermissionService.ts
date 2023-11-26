@@ -13,11 +13,7 @@ export type PayloadGetAll = {
 class PermissionService {
     public static async getAll(): Promise<PayloadGetAll> {
         try {
-            const response: ResponseBody<PayloadGetAll> = await APIService.get("/admin/management/permissions", {
-                headers: {
-                    Authorization: `Bearer ${cookie.get("access_token")}`
-                }
-            });
+            const response: ResponseBody<PayloadGetAll> = await APIService.get("/admin/management/permissions", true);
             return response.payload
         } catch (error: any) {
             return {

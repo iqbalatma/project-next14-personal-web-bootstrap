@@ -6,6 +6,14 @@ const Alert = () => {
     const onClose = () => {
         closeAlert()
     }
+
+    useEffect(() => {
+        if (isShowAlert) {
+            setTimeout(() => {
+                closeAlert()
+            }, 2500)
+        }
+    }, [isShowAlert]);
     return (
         <>
             {
