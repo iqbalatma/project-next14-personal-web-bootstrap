@@ -1,9 +1,9 @@
 "use client"
 import React from 'react';
-import Alert from "@/components/Alert/Alert";
 import InvalidInputFeedback from "@/components/InvalidInputFeedback";
 import Link from "next/link";
 import useLogin from "@/services/auth/useLogin";
+import Alert from "@/components/Alert";
 
 const Auth = () => {
     const {handleSubmit, setEmail, setPassword, inputErrors} = useLogin()

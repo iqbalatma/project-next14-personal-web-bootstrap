@@ -2,15 +2,14 @@
 import React, {useEffect, useState} from "react";
 import PermissionService from "@/api/client-side/admin/management/PermissionService";
 import {Permission} from "@/types/models/Permission";
-import Breadcrumb from "@/components/Breadcumb/Breadcrumb";
-import Alert from "@/components/Alert/Alert";
 import useAlert from "@/services/global-state/useAlert";
+import PageTitle from "@/components/PageTitle";
 
 
 const Page = () => {
     const [permissions, setPermissions] = useState<Permission[] | null>(null)
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const {setAlert, isShowAlert} = useAlert();
+    const {setAlert} = useAlert();
     const fetchData = async () => {
         setIsLoading(true)
         const response = await PermissionService.getAll();
@@ -27,19 +26,7 @@ const Page = () => {
 
     return (
         <div className="page-heading">
-            <Alert></Alert>
-            <div className="page-title">
-                <div className="row">
-                    <div className="col-12 col-md-6 order-md-1 order-last">
-                        <h3>Permissions</h3>
-                        <p className="text-subtitle text-muted">Data related to permission to all access</p>
-                    </div>
-
-                    <div className="col-12 col-md-6 order-md-2 order-first">
-                        <Breadcrumb></Breadcrumb>
-                    </div>
-                </div>
-            </div>
+            <PageTitle title="Permissions" subTitle="Data related to permission to all acces"></PageTitle>
             <section className="section">
                 <section className="section">
                     <div className="row" id="basic-table">

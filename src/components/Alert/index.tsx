@@ -3,9 +3,6 @@ import useAlert from "@/services/global-state/useAlert";
 
 const Alert = () => {
     const {closeAlert, isShowAlert, textAlert} = useAlert()
-    const onClose = () => {
-        closeAlert()
-    }
 
     useEffect(() => {
         if (isShowAlert) {
@@ -14,13 +11,14 @@ const Alert = () => {
             }, 2500)
         }
     }, [isShowAlert]);
+
     return (
         <>
             {
                 isShowAlert && <div className="alert alert-danger alert-dismissible show fade">
                     {textAlert}
                     <button type="button" className="btn-close" onClick={() => {
-                        onClose()
+                        closeAlert()
                     }} aria-label="Close"></button>
                 </div>
             }
