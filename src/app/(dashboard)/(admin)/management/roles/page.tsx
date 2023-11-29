@@ -15,7 +15,6 @@ const Page = () => {
         if (response?.error) {
             setAlert(response?.error)
         }
-        console.log(response)
     }
 
     useEffect(() => {
