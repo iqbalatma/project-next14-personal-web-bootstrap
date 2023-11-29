@@ -1,46 +1,40 @@
 "use client"
 import React, {useEffect, useState} from "react";
-import PermissionService from "@/api/client-side/admin/management/PermissionService";
-import {Permission} from "@/types/models/Permission";
-import useAlert from "@/services/global-state/useAlert";
 import PageTitle from "@/components/PageTitle";
+import RoleService from "@/api/client-side/admin/management/RoleService";
+import useAlert from "@/services/global-state/useAlert";
+import {Role} from "@/types/models/Roles";
 
 
 const Page = () => {
-    const [permissions, setPermissions] = useState<Permission[] | null>(null)
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-    const {setAlert} = useAlert();
-    const fetchPermission = async () => {
-        setIsLoading(true)
-        const response = await PermissionService.getAll();
-        setPermissions(response.data);
+    const {setAlert} = useAlert()
+    const [roles, setRoles] = useState<Role[] | null>(null);
+    const fetchRole = async () => {
+        const response = await RoleService.getAllPaginated();
+        setRoles(response.data)
         if (response?.error) {
             setAlert(response?.error)
         }
-        setIsLoading(false)
+        console.log(response)
     }
 
     useEffect(() => {
-        fetchPermission()
+        fetchRole()
     }, [])
-
     return (
         <div className="page-heading">
-            <PageTitle title="Permissions" subTitle="Data related to permission to all acces"></PageTitle>
+            <PageTitle title="Roles" subTitle="Data related to role for user"></PageTitle>
             <section className="section">
                 <section className="section">
                     <div className="row" id="basic-table">
                         <div className="col-12 col-md-12">
                             <div className="card">
                                 <div className="card-header">
-                                    <h4 className="card-title">Data All Permissions</h4>
+                                    <h4 className="card-title">Data All Roles</h4>
                                 </div>
                                 <div className="card-content">
                                     <div className="card-body">
                                         <div className="table-responsive">
-
-                                            {isLoading && <h1>Loading . . . </h1>}
-
                                             <table className="table table-lg">
                                                 <thead>
                                                 <tr>
@@ -50,7 +44,7 @@ const Page = () => {
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                {!isLoading && permissions && permissions.map((item: Permission, index: number) => (
+                                                {roles && roles.map((item: Role, index: number) => (
                                                     <tr key={index}>
                                                         <td>{item.id}</td>
                                                         <td>{item.name}</td>

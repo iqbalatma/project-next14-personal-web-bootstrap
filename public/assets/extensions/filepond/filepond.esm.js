@@ -6515,7 +6515,7 @@ const dragItem = ({ root, action }) => {
 };
 
 /**
- * Setup action routes
+ * Setup action roles
  */
 const route$2 = createRoute({
     DID_ADD_ITEM: addItemView,

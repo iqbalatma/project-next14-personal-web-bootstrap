@@ -1,5 +1,4 @@
 import APIService from "@/api/utils/APIService";
-import cookie from "@/libraries/cookie";
 import {ResponseBody} from "@/api/utils/type";
 import {Permission} from "@/types/models/Permission";
 import {PaginationType} from "@/types/Pagination";

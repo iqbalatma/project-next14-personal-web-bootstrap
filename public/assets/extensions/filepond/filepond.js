@@ -9114,7 +9114,7 @@
     };
 
     /**
-     * Setup action routes
+     * Setup action roles
      */
     var route$2 = createRoute({
         DID_ADD_ITEM: addItemView,
