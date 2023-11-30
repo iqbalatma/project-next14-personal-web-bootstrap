@@ -1,3 +1,4 @@
+"use client"
 import React, {useEffect} from 'react';
 import useAlert from "@/services/global-state/useAlert";
 
@@ -11,7 +12,6 @@ const Alert = () => {
             }, 2500)
         }
     }, [isShowAlert]);
-
     return (
         <>
             {

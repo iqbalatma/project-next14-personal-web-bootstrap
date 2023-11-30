@@ -10,12 +10,14 @@
   },
   "dependencies": {
     "@boiseitguru/cookie-cutter": "^0.2.1",
+    "@tanstack/react-table": "^8.10.7",
     "axios": "^1.6.2",
     "jsonwebtoken": "^9.0.2",
     "next": "14.0.3",
     "react": "^18",
     "react-cookie": "^6.1.1",
     "react-dom": "^18",
+    "react-table": "^7.8.0",
     "swr": "^2.2.4",
     "zustand": "^4.4.6"
   },

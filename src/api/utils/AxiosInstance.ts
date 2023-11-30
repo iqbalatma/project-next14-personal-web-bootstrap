@@ -7,8 +7,6 @@ export type Header = {
 
 export type APIOption = {
     headers?: Header,
-    "User-Agent"?: string | null,
-    "cache-control"?: string | null
 }
 const axiosInstance = (isFormData: boolean = false, options?: APIOption) => {
     return axios.create({
