@@ -9,9 +9,11 @@ export type PayloadGetAllRolePaginated = {
 }
 
 class RoleService extends ServerSideAPIService {
-    public static async getAllPaginated(): Promise<PayloadGetAllRolePaginated> {
+    public static async getAllPaginated(page: string|string[]|null): Promise<PayloadGetAllRolePaginated> {
         try {
-            const response = await this.get<PayloadGetAllRolePaginated>("/admin/management/rolesx", true);
+            const perpage = page ? "page="+page:"";
+            console.log(perpage)
+            const response = await this.get<PayloadGetAllRolePaginated>("/admin/management/roles?"+perpage, true);
             return response.payload
         } catch (error) {
             return {

@@ -17,30 +17,28 @@ const Auth = () => {
                 <p className="auth-subtitle mb-5">Log in with your data that you entered during
                     registration.</p>
                 <Alert></Alert>
-
                 <form onSubmit={(e) => e.preventDefault()}>
                     <div className="form-group position-relative has-icon-left mb-4">
                         <input type="email"
-                               className={`form-control form-control-xl ${inputErrors.email ? "is-invalid" : ""}`}
+                               className={`form-control form-control-xl ${(inputErrors.email?.length ?? 0) > 0 ? "is-invalid" : ""}`}
                                placeholder="Email"
                                onChange={(e) => {
                                    setEmail(e.target.value)
                                }}/>
-                        {inputErrors.email &&
-                            <InvalidInputFeedback invalidText={inputErrors.email}></InvalidInputFeedback>}
+                        {inputErrors.email && inputErrors.email.length > 0 &&
+                            <InvalidInputFeedback invalidText={inputErrors.email[0]}></InvalidInputFeedback>}
                         <div className="form-control-icon">
                             <i className="bi bi-envelope"></i>
                         </div>
                     </div>
                     <div className="form-group position-relative has-icon-left mb-4">
                         <input type="password"
-                               className={`form-control form-control-xl ${inputErrors.password ? "is-invalid" : ""}`}
+                               className={`form-control form-control-xl ${(inputErrors.password?.length??0) > 0 ? "is-invalid" : ""}`}
                                placeholder="Password" onChange={(e) => {
                             setPassword(e.target.value)
                         }}/>
-                        {inputErrors.password &&
-                            <InvalidInputFeedback
-                                invalidText={inputErrors.password}></InvalidInputFeedback>}
+                        {inputErrors.password && inputErrors.password.length > 0 &&
+                            <InvalidInputFeedback invalidText={inputErrors.password[0]}></InvalidInputFeedback>}
                         <div className="form-control-icon">
                             <i className="bi bi-shield-lock"></i>
                         </div>

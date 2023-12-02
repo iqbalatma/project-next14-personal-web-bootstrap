@@ -6,21 +6,22 @@ import AuthenticateService from "@/api/client-side/auth/AuthenticateService";
 import useAuthCookie from "@/services/auth/useAuthCookie";
 import {RESPONSE_CODE} from "@/enums/RESPONSE_CODE";
 import useAlert from "@/services/global-state/useAlert";
+import {z, ZodError} from "zod";
+import ValidationErrorMessages from "@/config/ValidationErrorMessages";
 
 type LoginInputErrors = {
-    email?: string | null,
-    password?: string | null,
+    email?: string[] | null,
+    password?: string[] | null,
 }
 const useLogin = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [inputErrors, setInputErrors] = useState<LoginInputErrors>({
-        email: null,
-        password: null
+        email: [],
+        password: []
     })
     const {setLoginCookie} = useAuthCookie()
     const {setAlert} = useAlert.getState()
-    let isErrors: boolean = false;
     const router = useRouter()
 
 
@@ -34,44 +35,50 @@ const useLogin = () => {
     const handleSubmit = async (): Promise<void> => {
         initialState()
         try {
-            if (password === "") {
-                setInputErrors((prevErrors) => ({
-                    ...prevErrors,
-                    password: "Password is required",
-                }))
-                isErrors = true
-            }
-            if (email === "") {
-                setInputErrors((prevErrors) => ({
-                    ...prevErrors,
-                    email: "Email is required",
-                }))
-                isErrors = true
-            }
+            const loginSchema = z.object({
+                email: z.string().trim().min(1, {
+                    message: ValidationErrorMessages.required("Email")
+                }).email(),
+                password: z.string().trim().min(1, {
+                    message: ValidationErrorMessages.required("Password")
+                })
+            });
 
-            if (isErrors) {
-                return;
+            const result = loginSchema.safeParse({
+                email, password
+            });
+
+            if (!result.success) {
+                const parsedMessageError = ValidationErrorMessages.getParsedErrorMessage(result.error.errors)
+                setInputErrors({
+                    email: parsedMessageError.email ?? [],
+                    password: parsedMessageError.password ?? [],
+                })
+            }else{
+                const response = await AuthenticateService.login(result.data.email, result.data.password)
+                setLoginCookie(response)
+                router.push("/dashboard")
             }
-
-
-            const response = await AuthenticateService.login(email, password)
-            setLoginCookie(response)
-            router.push("/dashboard")
         } catch (exceptionError: any) {
+            console.log(exceptionError);
             const {errorCode, errorType} = helper.parseFetchException(exceptionError);
             if (errorType === HTTP_RESPONSE_TYPE.CLIENT_ERROR) {
                 if (errorCode === RESPONSE_CODE.ERR_UNAUTHENTICATED) {
                     setAlert("Invalid user credentials")
                     setInputErrors({
-                        password: "Password is invalid",
-                        email: "Email is invalid",
+                        password: ["Password is invalid"],
+                        email: ["Email is invalid"],
                     })
+
+                    return;
                 }
+
+                setAlert("Something went wrong")
+                return;
             }
 
-            if (errorType === HTTP_RESPONSE_TYPE.SERVER_ERROR) {
-                setAlert("Something went wrong")
-            }
+            setAlert("Something went wrong")
+            return;
         }
     }
 
