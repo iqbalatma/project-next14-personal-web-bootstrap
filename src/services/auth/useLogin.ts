@@ -6,7 +6,7 @@ import AuthenticateService from "@/api/client-side/auth/AuthenticateService";
 import useAuthCookie from "@/services/auth/useAuthCookie";
 import {RESPONSE_CODE} from "@/enums/RESPONSE_CODE";
 import useAlert from "@/services/global-state/useAlert";
-import {z, ZodError} from "zod";
+import {z} from "zod";
 import ValidationErrorMessages from "@/config/ValidationErrorMessages";
 
 type LoginInputErrors = {
@@ -54,10 +54,10 @@ const useLogin = () => {
                     email: parsedMessageError.email ?? [],
                     password: parsedMessageError.password ?? [],
                 })
-            }else{
+            } else {
                 const response = await AuthenticateService.login(result.data.email, result.data.password)
                 setLoginCookie(response)
-                router.push("/dashboard")
+                // router.push("/dashboard")
             }
         } catch (exceptionError: any) {
             console.log(exceptionError);

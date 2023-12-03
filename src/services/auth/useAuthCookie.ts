@@ -29,11 +29,17 @@ const useAuthCookie = () => {
         return true;
     }
 
+    /**
+     *
+     * @param response
+     */
     const setLoginCookie = (response: PayloadLogin) => {
         const {setLogin} = useAuth.getState()
         const parsedAccessToken = JWTService.getParsedJWT(response.data.token.access_token);
         const parsedRefreshToken = JWTService.getParsedJWT(response.data.token.refresh_token);
 
+
+        console.log(parsedAccessToken);
         if (parsedAccessToken) {
             setCookie("access_token", response.data.token.access_token, {
                 path: "/",
