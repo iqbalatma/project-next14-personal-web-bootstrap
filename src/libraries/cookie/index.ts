@@ -6,7 +6,7 @@ type CookieOption = {
     path?: string | null,
     domain?: string | null
     maxAge?: number|null,
-    expires?: string|null,
+    expires?: Date|string|null,
 }
 
 class ClientSideCookie {
@@ -41,7 +41,7 @@ class ClientSideCookie {
     }
 
     public static set(key: string, value: any, options: CookieOption = {}): void {
-        const {isSecure, path, domain, maxAge, expires} = {...this.getDefaultCookieOption(), ...options}
+        const {isSecure, path, domain, maxAge, expires, sameSite} = {...this.getDefaultCookieOption(), ...options}
 
         let cookieString: string = `${key}=${value};`;
         if (isSecure) {
@@ -59,8 +59,12 @@ class ClientSideCookie {
         if (expires) {
             cookieString += `${expires};`
         }
+        if (sameSite) {
+            cookieString += `SameSite=${sameSite};`
+        }
 
 
+        console.log(cookieString)
         document.cookie = cookieString
     }
 }
