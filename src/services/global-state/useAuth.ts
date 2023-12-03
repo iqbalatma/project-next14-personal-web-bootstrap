@@ -12,6 +12,8 @@ type UserStore = {
         access_token: string | null,
         refresh_token: string | null
     },
+    logout: () => void,
+    check: () => void,
     setLogin: (response: PayloadLogin) => void,
     setLoginStatus: (isLogin: boolean) => void,
 }
@@ -23,8 +25,27 @@ const useAuth = create<UserStore>((set) => ({
         refresh_token: null
     },
     isLogin: false,
+    check: () => {
+        set((state) => {
+            const isLogin = state.isLogin;
+            if (!isLogin){
+                const accessToken = ClientSideCookie.get("access_token");
+                if (accessToken && accessToken !== "" && JWTService.getUser(accessToken)){
+                    const user = JWTService.getUser(accessToken)
+                    state.isLogin = true;
+                    state.user = user;
+                }else{
+                    state.isLogin = false;
+                    state.user = null;
+                    state.token.access_token = null;
+                }
+            }
+
+            return state;
+        });
+    },
     setLogin: (response: PayloadLogin) => {
-        set((state:any)=>({
+        set((state: any) => ({
             ...state,
             user: {...response.data},
             isLogin: true
@@ -35,21 +56,32 @@ const useAuth = create<UserStore>((set) => ({
 
         if (parsedAccessToken) {
             ClientSideCookie.set("access_token", response.data.token.access_token, {
-                isSecure:true,
-                path:"/",
+                isSecure: true,
+                path: "/",
                 sameSite: COOKIE_SAME_SITE.LAX,
-                expires : new Date(parsedAccessToken.exp * 1000)
+                expires: new Date(parsedAccessToken.exp * 1000)
             })
         }
         if (parsedRefreshToken) {
             ClientSideCookie.set("refresh_token", response.data.token.refresh_token, {
-                isSecure:true,
-                path:"/",
+                isSecure: true,
+                path: "/",
                 sameSite: COOKIE_SAME_SITE.LAX,
-                expires : new Date(parsedRefreshToken.exp * 1000)
+                expires: new Date(parsedRefreshToken.exp * 1000)
             })
         }
-
+    },
+    logout: () => {
+        set((state: any) => ({
+            ...state,
+            user: null,
+            isLogin: false,
+            token: {
+                access_token: null,
+                refresh_token: null
+            },
+        }))
+        ClientSideCookie.remove("access_token")
     },
     setLoginStatus: (isLogin: boolean) => set((state: any) => ({
         ...state,

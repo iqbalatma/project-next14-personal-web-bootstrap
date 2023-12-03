@@ -1,5 +1,12 @@
 export type ParsedToken = {
+    iss: string,
+    iat: number,
     exp: number
+    nbf: number
+    jti: string,
+    sub: string,
+    iua: string,
+    type: string,
     firstname: string,
     lastname: string,
     fullname: string,
@@ -12,9 +19,7 @@ class JWTService {
         if (jwtToken === undefined) {
             return null
         }
-        const base64Url = jwtToken.split('.')[1];
         const jwt = require('jsonwebtoken');
-
         return jwt.decode(jwtToken)
     }
 
@@ -22,6 +27,7 @@ class JWTService {
         const parsedToken = this.getParsedJWT(jwtToken);
         if (parsedToken) {
             return {
+                "id": parsedToken.sub ?? null,
                 "firstname": parsedToken.firstname ?? null,
                 "lastname": parsedToken.lastname ?? null,
                 "fullname": parsedToken.fullname ?? null,

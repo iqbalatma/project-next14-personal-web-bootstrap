@@ -1,15 +1,18 @@
 import {NextResponse} from 'next/server'
 import type {NextRequest} from 'next/server'
 import {cookies} from "next/headers";
+import JWTService from "@/services/JWTService";
+import {ac} from "../public/assets/extensions/chart.js/chunks/helpers.segment";
 
 export function middleware(request: NextRequest) {
     const accessToken: string | undefined = cookies().get("access_token")?.value;
+    const parsedUserFromAccessToken = JWTService.getUser(accessToken??"")
 
-    if (accessToken && request.nextUrl.pathname === "/auth") {
+    if (accessToken && parsedUserFromAccessToken && request.nextUrl.pathname === "/auth") {
         return NextResponse.redirect(new URL('/dashboard', request.url))
     }
 
-    if (!accessToken && request.nextUrl.pathname !== "/auth") {
+    if (!accessToken && !parsedUserFromAccessToken && request.nextUrl.pathname !== "/auth") {
         return NextResponse.redirect(new URL('/auth', request.url))
     }
 
