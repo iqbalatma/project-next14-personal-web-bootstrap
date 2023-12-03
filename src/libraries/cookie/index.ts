@@ -1,4 +1,26 @@
+import COOKIE_SAME_SITE from "@/enums/COOKIE_SAME_SITE";
+
+type CookieOption = {
+    sameSite?: COOKIE_SAME_SITE,
+    isSecure?: boolean,
+    path?: string | null,
+    domain?: string | null
+    maxAge?: number|null,
+    expires?: string|null,
+}
+
 class ClientSideCookie {
+    private static getDefaultCookieOption = (): CookieOption => {
+        return {
+            isSecure: false,
+            sameSite: COOKIE_SAME_SITE.LAX,
+            path: null,
+            domain: null,
+            maxAge: null,
+            expires: null,
+        }
+    }
+
     public static get<T = any>(key: string): T {
         const cookieDataFromBrowser = document.cookie
             .split("; ")
@@ -17,6 +39,30 @@ class ClientSideCookie {
 
         return cookieItem;
     }
+
+    public static set(key: string, value: any, options: CookieOption = {}): void {
+        const {isSecure, path, domain, maxAge, expires} = {...this.getDefaultCookieOption(), ...options}
+
+        let cookieString: string = `${key}=${value};`;
+        if (isSecure) {
+            cookieString += "Secure;"
+        }
+        if (path) {
+            cookieString += `${path};`
+        }
+        if (domain) {
+            cookieString += `${domain};`
+        }
+        if (maxAge) {
+            cookieString += `${maxAge};`
+        }
+        if (expires) {
+            cookieString += `${expires};`
+        }
+
+
+        document.cookie = cookieString
+    }
 }
 
-export default ClientSideCookie
+export default ClientSideCookie;

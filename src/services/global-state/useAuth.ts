@@ -1,5 +1,6 @@
 import {create} from "zustand";
 import {User} from "@/types/models/User";
+import ClientSideCookie from "@/libraries/cookie";
 
 type UserStore = {
     user: User | null,
@@ -9,6 +10,7 @@ type UserStore = {
         refresh_token: string | null
     },
     setLogin: (user: any) => void,
+    setLoginCookie: () => void,
     setLoginStatus: (isLogin: boolean) => void,
 }
 
@@ -19,6 +21,9 @@ const useAuth = create<UserStore>((set) => ({
         refresh_token: null
     },
     isLogin: false,
+    setLoginCookie: () => {
+        ClientSideCookie.set("Iqbal", "atma", {isSecure:true})
+    },
     setLogin: (user: any) => set(
         (state: any) => ({
             ...state,
